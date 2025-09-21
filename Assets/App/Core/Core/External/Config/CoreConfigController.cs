@@ -1,7 +1,8 @@
-﻿using App.Common.Configs.Runtime;
+﻿using System.Collections.Generic;
+using App.Common.Configs.Runtime;
 using UnityEngine;
 
-namespace App.Core.Main.External.Config
+namespace App.Core.Core.External.Config
 {
     public class CoreConfigController
     {
@@ -29,9 +30,9 @@ namespace App.Core.Main.External.Config
             return true;
         }
      
-        public long GetMaxBreedsCount()
+        public IReadOnlyList<CubeConfig> GetCubes()
         {
-            return m_Config.MaxBreedsCount < 0 ? 10 : m_Config.MaxBreedsCount;
+            return m_Config.Cubes;
         }
     }
     

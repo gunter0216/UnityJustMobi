@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace App.Core.Main.External.Animations
+namespace App.Core.Core.External.Animations
 {
     public class SoftAccrualAnimation : IDisposable, ISoftAccrualAnimation
     {

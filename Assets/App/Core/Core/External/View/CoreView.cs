@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace App.Core.Main.External.View
+namespace App.Core.Core.External.View
 {
     public class CoreView : MonoBehaviour
     {

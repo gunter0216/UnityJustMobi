@@ -1,9 +1,8 @@
-﻿using App.Common.AssetSystem.Runtime;
-using App.Common.Configs.Runtime;
+﻿using App.Common.Configs.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using UnityEngine;
 
-namespace App.Core.Main.External.Config
+namespace App.Core.Core.External.Config
 {
     public class CoreConfigLoader
     {

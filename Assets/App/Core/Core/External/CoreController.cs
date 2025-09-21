@@ -6,11 +6,11 @@ using App.Common.Data.Runtime;
 using App.Common.SceneControllers.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
-using App.Core.Main.External.Config;
-using App.Core.Main.External.Presenter;
+using App.Core.Core.External.Config;
+using App.Core.Core.External.Presenter;
 using UnityEngine;
 
-namespace App.Core.Main.External
+namespace App.Core.Core.External
 {
     public class CoreController : IInitSystem, IDisposable
     {

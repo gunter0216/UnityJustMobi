@@ -3,7 +3,7 @@ using App.Core.Startups.External;
 using App.Core.Startups.External.Attributes;
 using App.Core.Startups.External.Constants;
 
-namespace App.Core.Main.External
+namespace App.Core.Core.External
 {
     [Configurator(ContextConstants.CoreContext)]    
     public class CoreConfigurator : Configurator

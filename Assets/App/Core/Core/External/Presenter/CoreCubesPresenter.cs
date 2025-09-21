@@ -1,7 +1,7 @@
-﻿using App.Core.Main.External.Config;
-using App.Core.Main.External.View;
+﻿using App.Core.Core.External.Config;
+using App.Core.Core.External.View;
 
-namespace App.Core.Main.External.Presenter
+namespace App.Core.Core.External.Presenter
 {
     public class CoreCubesPresenter
     {

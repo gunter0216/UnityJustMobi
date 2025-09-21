@@ -2,12 +2,12 @@
 using App.Common.AssetSystem.Runtime;
 using App.Common.Audio.External;
 using App.Core.Canvases.External;
-using App.Core.Main.External.Config;
-using App.Core.Main.External.Presenter.Fabric;
-using App.Core.Main.External.View;
+using App.Core.Core.External.Config;
+using App.Core.Core.External.Presenter.Fabric;
+using App.Core.Core.External.View;
 using UnityEngine;
 
-namespace App.Core.Main.External.Presenter
+namespace App.Core.Core.External.Presenter
 {
     public class CorePresenter : IDisposable
     {
