@@ -28,13 +28,17 @@ namespace App.Common.Configs.Runtime
                 return new Optional<T>(default, false);
             }
 
-            var configConverter = m_ConfigConverters.FirstOrDefault(x => x.GetTargetType() == config.Value.GetType());
+            var configObj = config.Value;
+            var configConverter = m_ConfigConverters.FirstOrDefault(converter =>
+                converter.GetTargetType().IsInstanceOfType(configObj));
             if (configConverter != null)
             {
-                var convertedConfig = configConverter.Convert<T>(config.Value);
+                var convertedConfig = configConverter.Convert<T>(configObj);
                 m_AssetManager.UnloadAsset(keyEvaluator);
                 return convertedConfig;
             }
+            
+            Debug.LogError($"Not found config converter for type {configObj.GetType().Name} with key {localKey}.");
             
             m_AssetManager.UnloadAsset(keyEvaluator);
             
