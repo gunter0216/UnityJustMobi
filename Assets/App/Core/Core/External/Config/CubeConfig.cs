@@ -8,8 +8,18 @@ namespace App.Core.Core.External.Config
     {
         [SerializeField] private string m_Key;
         [SerializeField] private string m_AssetKey;
-        
+
         public string Key => m_Key;
         public string AssetKey => m_AssetKey;
+        
+        public CubeConfig()
+        {
+        }
+        
+        public CubeConfig(string key, string assetKey)
+        {
+            m_Key = key;
+            m_AssetKey = assetKey;
+        }
     }
 }

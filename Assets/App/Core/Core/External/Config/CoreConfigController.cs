@@ -7,18 +7,22 @@ namespace App.Core.Core.External.Config
     public class CoreConfigController
     {
         private readonly IConfigLoader m_ConfigLoader;
+        private readonly ICoreConfigLoader m_CoreConfigLoader;
 
         private CoreConfig m_Config;
 
         public CoreConfigController(IConfigLoader configLoader)
         {
             m_ConfigLoader = configLoader;
-        }
+            
+            // todo change loader here
+            // m_CoreConfigLoader = new ScriptableCoreConfigLoader(m_ConfigLoader);
+            m_CoreConfigLoader = new JsonCoreConfigLoader(m_ConfigLoader);
+        }   
 
         public bool Initialize()
         {
-            var configLoader = new CoreConfigLoader(m_ConfigLoader);
-            var config = configLoader.Load();
+            var config = m_CoreConfigLoader.Load();
             if (!config.HasValue)
             {
                 Debug.LogError("[CoreConfigController] In method Initialize, error load CoreConfig.");
@@ -35,6 +39,4 @@ namespace App.Core.Core.External.Config
             return m_Config.Cubes;
         }
     }
-    
-    
 }

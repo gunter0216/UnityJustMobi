@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace App.Core.Core.External.Config
 {
-    [CreateAssetMenu(fileName = "CoreConfig", menuName = "Configs/CoreConfig")]
-    public class CoreConfig : ScriptableObject
+    public class CoreConfig
     {
-        [SerializeField] private CubeConfig[] m_Cubes;
-        
+        private readonly IReadOnlyList<CubeConfig> m_Cubes;
+
+        public CoreConfig(IReadOnlyList<CubeConfig> cubes)
+        {
+            m_Cubes = cubes;
+        }
+
         public IReadOnlyList<CubeConfig> Cubes => m_Cubes;
     }
 }

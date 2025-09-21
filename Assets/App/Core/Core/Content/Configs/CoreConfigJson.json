@@ -1,0 +1,84 @@
+{
+  "cubes": [
+    {
+      "key": "Cube1",
+      "asset_key": "Cube1"
+    },
+    {
+      "key": "Cube2",
+      "asset_key": "Cube2"
+    },
+    {
+      "key": "Cube3",
+      "asset_key": "Cube3"
+    },
+    {
+      "key": "Cube4",
+      "asset_key": "Cube4"
+    },
+    {
+      "key": "Cube5",
+      "asset_key": "Cube5"
+    },
+    {
+      "key": "Cube6",
+      "asset_key": "Cube6"
+    },
+    {
+      "key": "Cube7",
+      "asset_key": "Cube7"
+    },
+    {
+      "key": "Cube8",
+      "asset_key": "Cube8"
+    },
+    {
+      "key": "Cube9",
+      "asset_key": "Cube9"
+    },
+    {
+      "key": "Cube10",
+      "asset_key": "Cube10"
+    },
+    {
+      "key": "Cube11",
+      "asset_key": "Cube11"
+    },
+    {
+      "key": "Cube12",
+      "asset_key": "Cube12"
+    },
+    {
+      "key": "Cube13",
+      "asset_key": "Cube13"
+    },
+    {
+      "key": "Cube14",
+      "asset_key": "Cube14"
+    },
+    {
+      "key": "Cube15",
+      "asset_key": "Cube15"
+    },
+    {
+      "key": "Cube16",
+      "asset_key": "Cube16"
+    },
+    {
+      "key": "Cube17",
+      "asset_key": "Cube17"
+    },
+    {
+      "key": "Cube18",
+      "asset_key": "Cube18"
+    },
+    {
+      "key": "Cube19",
+      "asset_key": "Cube19"
+    },
+    {
+      "key": "Cube20",
+      "asset_key": "Cube20"
+    }
+  ]
+}
