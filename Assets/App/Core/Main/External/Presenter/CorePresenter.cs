@@ -2,6 +2,7 @@
 using App.Common.AssetSystem.Runtime;
 using App.Common.Audio.External;
 using App.Core.Canvases.External;
+using App.Core.Main.External.Config;
 using App.Core.Main.External.Presenter.Fabric;
 using App.Core.Main.External.View;
 using UnityEngine;
@@ -13,17 +14,21 @@ namespace App.Core.Main.External.Presenter
         private readonly IAssetManager m_AssetManager;
         private readonly ICanvas m_Canvas;
         private readonly ISoundManager m_SoundManager;
-        
+        private readonly CoreConfigController m_ConfigController;
+
         private CoreView m_View;
+        private CoreCubesPresenter m_CubesPresenter;
 
         public CorePresenter(
             IAssetManager assetManager,
             ICanvas canvas,
-            ISoundManager soundManager)
+            ISoundManager soundManager, 
+            CoreConfigController configController)
         {
             m_AssetManager = assetManager;
             m_Canvas = canvas;
             m_SoundManager = soundManager;
+            m_ConfigController = configController;
         }
 
         public bool Initialize()
@@ -33,7 +38,15 @@ namespace App.Core.Main.External.Presenter
                 return false;
             }
 
+            InitView();
+
             return true;
+        }
+
+        private void InitView()
+        {
+            m_CubesPresenter = new CoreCubesPresenter(m_View.CubesView, m_ConfigController);
+            m_CubesPresenter.Initialize();
         }
 
         private bool CreateView()
