@@ -1,0 +1,4 @@
+﻿{
+  "name": "Autumn.ConfigLoader",
+  "references":[ "Autumn.Utility", "Autumn.AssetSystem", "Autumn.Json", "Unity.Addressables" ]
+}
