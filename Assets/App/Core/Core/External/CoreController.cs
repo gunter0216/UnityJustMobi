@@ -8,6 +8,7 @@ using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
 using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter;
+using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
 namespace App.Core.Core.External
@@ -20,6 +21,7 @@ namespace App.Core.Core.External
         private readonly ISceneManager m_SceneManager;
         private readonly ISoundManager m_SoundManager;
         private readonly IConfigLoader m_ConfigLoader;
+        private readonly ISpriteLoader m_SpriteLoader;
         
         private CorePresenter m_Presenter;
         private CoreConfigController m_ConfigController;
@@ -30,7 +32,8 @@ namespace App.Core.Core.External
             IDataManager dataManager, 
             ISceneManager sceneManager, 
             ISoundManager soundManager, 
-            IConfigLoader configLoader)
+            IConfigLoader configLoader, 
+            ISpriteLoader spriteLoader)
         {
             m_MainCanvas = mainCanvas;
             m_AssetManager = assetManager;
@@ -38,6 +41,7 @@ namespace App.Core.Core.External
             m_SceneManager = sceneManager;
             m_SoundManager = soundManager;
             m_ConfigLoader = configLoader;
+            m_SpriteLoader = spriteLoader;
         }
 
         public void Init()
@@ -53,7 +57,8 @@ namespace App.Core.Core.External
                 m_AssetManager, 
                 m_MainCanvas,
                 m_SoundManager,
-                m_ConfigController);
+                m_ConfigController,
+                m_SpriteLoader);
             if (!m_Presenter.Initialize())
             {
                 Debug.LogError($"Cant initialize");

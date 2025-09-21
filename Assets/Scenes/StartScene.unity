@@ -374,14 +374,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 608552163368918554, guid: fbf027d290d03494a91f07d9cf035c04, type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 2560
-      objectReference: {fileID: 0}
-    - target: {fileID: 608552163368918554, guid: fbf027d290d03494a91f07d9cf035c04, type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 1440
-      objectReference: {fileID: 0}
     - target: {fileID: 2802215233981001923, guid: fbf027d290d03494a91f07d9cf035c04, type: 3}
       propertyPath: m_Name
       value: 'PopupCanvas '
@@ -669,14 +661,6 @@ PrefabInstance:
       propertyPath: m_VertexColorAlwaysGammaSpace
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7576091368009069426, guid: 2c18874df6258c0459ee0f1a9777b40b, type: 3}
-      propertyPath: m_ReferenceResolution.x
-      value: 2560
-      objectReference: {fileID: 0}
-    - target: {fileID: 7576091368009069426, guid: 2c18874df6258c0459ee0f1a9777b40b, type: 3}
-      propertyPath: m_ReferenceResolution.y
-      value: 1440
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1443586874478545293, guid: 2c18874df6258c0459ee0f1a9777b40b, type: 3}
@@ -713,6 +697,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 540270307810172792}
     m_Modifications:
+    - target: {fileID: 87102304072141972, guid: 8ad12f388d08af247ba48f4c9db109d7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 138.59998
+      objectReference: {fileID: 0}
     - target: {fileID: 736986615643272195, guid: 8ad12f388d08af247ba48f4c9db109d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

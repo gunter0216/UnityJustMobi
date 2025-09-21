@@ -5,6 +5,7 @@ using App.Core.Canvases.External;
 using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter.Fabric;
 using App.Core.Core.External.View;
+using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
 namespace App.Core.Core.External.Presenter
@@ -15,6 +16,7 @@ namespace App.Core.Core.External.Presenter
         private readonly ICanvas m_Canvas;
         private readonly ISoundManager m_SoundManager;
         private readonly CoreConfigController m_ConfigController;
+        private readonly ISpriteLoader m_SpriteLoader;
 
         private CoreView m_View;
         private CoreCubesPresenter m_CubesPresenter;
@@ -22,13 +24,15 @@ namespace App.Core.Core.External.Presenter
         public CorePresenter(
             IAssetManager assetManager,
             ICanvas canvas,
-            ISoundManager soundManager, 
-            CoreConfigController configController)
+            ISoundManager soundManager,
+            CoreConfigController configController, 
+            ISpriteLoader spriteLoader)
         {
             m_AssetManager = assetManager;
             m_Canvas = canvas;
             m_SoundManager = soundManager;
             m_ConfigController = configController;
+            m_SpriteLoader = spriteLoader;
         }
 
         public bool Initialize()
@@ -45,7 +49,7 @@ namespace App.Core.Core.External.Presenter
 
         private void InitView()
         {
-            m_CubesPresenter = new CoreCubesPresenter(m_View.CubesView, m_ConfigController);
+            m_CubesPresenter = new CoreCubesPresenter(m_View.CubesView, m_ConfigController, m_SpriteLoader);
             m_CubesPresenter.Initialize();
         }
 
