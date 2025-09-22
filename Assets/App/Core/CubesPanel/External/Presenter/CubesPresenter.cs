@@ -10,7 +10,7 @@ namespace App.Core.Core.External.Presenter
     public class CubesPresenter
     {
         private readonly ISpriteLoader m_SpriteLoader;
-        private readonly CubeViewCreator m_CubeViewCreator;
+        private readonly ICoreUIController m_CoreUIController;
         private readonly CoreCubesView m_View;
         private readonly ICubesController m_CubesController;
         private readonly Action<TemplateCubePresenter> m_OnStartDrag;
@@ -18,13 +18,13 @@ namespace App.Core.Core.External.Presenter
         private List<TemplateCubePresenter> m_Cubes;
 
         public CubesPresenter(
-            CubeViewCreator cubeViewCreator, 
+            ICoreUIController coreUIController, 
             CoreCubesView view,
             ICubesController cubesController,
             ISpriteLoader spriteLoader,
             Action<TemplateCubePresenter> onStartDrag)
         {
-            m_CubeViewCreator = cubeViewCreator;
+            m_CoreUIController = coreUIController;
             m_View = view;
             m_CubesController = cubesController;
             m_SpriteLoader = spriteLoader;
@@ -37,14 +37,14 @@ namespace App.Core.Core.External.Presenter
             m_Cubes = new List<TemplateCubePresenter>(cubes.Count);
             foreach (var cubeConfig in cubes)
             {
-                var view = m_CubeViewCreator.Create(m_View.CubesContent);
+                var view = m_CoreUIController.CreateCubeView(m_View.CubesContent, cubeConfig);
                 if (!view.HasValue)
                 {
                     Debug.LogError("Cant create cube view");
                     return;
                 }
                 
-                var presenter = new TemplateCubePresenter(m_SpriteLoader, view.Value, cubeConfig, m_View.ScrollRect, OnCubeStartDrag);
+                var presenter = new TemplateCubePresenter(view.Value, cubeConfig, m_View.ScrollRect, OnCubeStartDrag);
                 presenter.Initialize();
                 m_Cubes.Add(presenter);
             }

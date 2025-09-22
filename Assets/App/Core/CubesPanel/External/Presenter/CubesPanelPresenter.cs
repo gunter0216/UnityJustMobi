@@ -47,9 +47,7 @@ namespace App.Core.Core.External.Presenter
 
         private void InitView()
         {
-            var cubeViewCreator = new CubeViewCreator(m_View.CubesView);
-            
-            m_CubesPresenter = new CubesPresenter(cubeViewCreator, m_View.CubesView, m_CubesController, m_SpriteLoader, OnCubeStartDrag);
+            m_CubesPresenter = new CubesPresenter(m_CoreUIController, m_View.CubesView, m_CubesController, m_SpriteLoader, OnCubeStartDrag);
             m_CubesPresenter.Initialize();
         }
 

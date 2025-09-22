@@ -16,10 +16,10 @@ namespace App.Core.Core.External.Presenter
         
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICoreUIController m_CoreUIController;
+        private readonly IHoleController m_HoleController;
 
         private readonly CompositeDisposable m_Disposables = new();
 
-        private CubeViewCreator m_CubeViewCreator;
         private CoreView m_CoreView;
 
         private CubeView m_View;
@@ -28,10 +28,11 @@ namespace App.Core.Core.External.Presenter
         private bool m_IsDragging = false;
         private Camera m_Camera;
         
-        public DragCubeController(ISpriteLoader spriteLoader, ICoreUIController coreUIController)
+        public DragCubeController(ISpriteLoader spriteLoader, ICoreUIController coreUIController, IHoleController holeController)
         {
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
+            m_HoleController = holeController;
         }
 
         public void Init()
@@ -43,8 +44,6 @@ namespace App.Core.Core.External.Presenter
             }
 
             m_CoreView = view.Value;
-            
-            m_CubeViewCreator = new CubeViewCreator(m_CoreView.CubesView);
             
             if (!CreateView())
             {
@@ -90,7 +89,15 @@ namespace App.Core.Core.External.Presenter
             {
                 if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
                 {
-                    Debug.LogError("Drop cube into tower");
+                    Debug.LogError("Drop cube into TOWER");
+                } 
+                else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
+                {
+                    m_HoleController.DropInHole(m_View, m_Config);
+                }
+                else
+                {
+                    // todo
                 }
                 
                 m_View.SetActive(false);
@@ -124,7 +131,7 @@ namespace App.Core.Core.External.Presenter
 
         private bool CreateView()
         {
-            var view = m_CubeViewCreator.Create(m_CoreView.ActiveCubeParent);
+            var view = m_CoreUIController.CreateCubeView(m_CoreView.ActiveCubeParent);
             if (!view.HasValue)
             {
                 Debug.LogError("Cant create cube view");

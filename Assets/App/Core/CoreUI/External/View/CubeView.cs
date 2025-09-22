@@ -29,5 +29,10 @@ namespace App.Core.Core.External.View
         {
             transform.position = position;
         }
+
+        public void SetParent(Transform parent)
+        {
+            transform.SetParent(parent);
+        }
     }
 }
