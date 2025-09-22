@@ -10,7 +10,7 @@ namespace App.Core.Core.External.Presenter
 {
     public class TemplateCubePresenter
     {
-        private const float m_AngleForDrag = 60f;
+        private const float m_AngleForDrag = 62.5f;
 
         private readonly CubeView m_View;
         private readonly CubeConfig m_Config;

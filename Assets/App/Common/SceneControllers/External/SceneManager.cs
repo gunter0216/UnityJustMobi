@@ -3,6 +3,7 @@ using App.Common.AssetSystem.Runtime.Context;
 using App.Common.Data.Runtime;
 using App.Common.SceneControllers.Runtime;
 using App.Game.SpriteLoaders.External;
+using DG.Tweening;
 
 namespace App.Common.SceneControllers.External
 {
@@ -24,6 +25,7 @@ namespace App.Common.SceneControllers.External
             m_DataManager.SaveProgress();
             m_AssetManager.UnloadContext(typeof(SceneAssetContext));
             m_SpriteLoader.UnloadContextIcons();
+            DOTween.KillAll();
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }

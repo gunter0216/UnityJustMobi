@@ -6,6 +6,7 @@ using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter.Fabric;
 using App.Core.Core.External.View;
 using App.Game.SpriteLoaders.Runtime;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace App.Core.Core.External
@@ -93,6 +94,7 @@ namespace App.Core.Core.External
                 return Optional<CubeView>.Fail();
             }
             
+            view.Value.transform.rotation = Quaternion.identity;
             view.Value.SetParent(parent);
 
             return Optional<CubeView>.Success(view.Value);
