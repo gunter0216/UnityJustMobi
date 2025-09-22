@@ -22,6 +22,7 @@ namespace App.Core.CubeDragger.External
         private readonly ICoreUIController m_CoreUIController;
         private readonly IHoleController m_HoleController;
         private readonly ITowerController m_TowerController;
+        private readonly IMessageController m_MessageController;
 
         private readonly CompositeDisposable m_Disposables = new();
 
@@ -38,12 +39,14 @@ namespace App.Core.CubeDragger.External
             ISpriteLoader spriteLoader, 
             ICoreUIController coreUIController, 
             IHoleController holeController,
-            ITowerController towerController)
+            ITowerController towerController, 
+            IMessageController messageController)
         {
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
             m_HoleController = holeController;
             m_TowerController = towerController;
+            m_MessageController = messageController;
         }
 
         public void Init()
@@ -113,6 +116,7 @@ namespace App.Core.CubeDragger.External
                 if (!isUsed)
                 {
                     m_CubeDisappearAnimation.Disappear(m_View, m_Config);
+                    m_MessageController.ShowMessage("Disappear");
                 }
                 
                 m_View.SetActive(false);
