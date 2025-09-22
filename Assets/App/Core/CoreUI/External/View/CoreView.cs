@@ -6,6 +6,7 @@ namespace App.Core.Core.External.View
     {
         [SerializeField] private CoreCubesView m_CubesView;
         [SerializeField] private Transform m_ActiveCubeParent;
+        [SerializeField] private Transform m_DisappearCubeParent;
         [SerializeField] private TowerView m_TowerView;
         [SerializeField] private HoleView m_HoleView;
 
@@ -13,5 +14,6 @@ namespace App.Core.Core.External.View
         public Transform ActiveCubeParent => m_ActiveCubeParent;
         public TowerView TowerView => m_TowerView;
         public HoleView HoleView => m_HoleView;
+        public Transform DisappearCubeParent => m_DisappearCubeParent;
     }
 }

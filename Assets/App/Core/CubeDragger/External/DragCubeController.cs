@@ -3,6 +3,7 @@ using App.Common.Utilities.Utility.Runtime;
 using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter.Fabric;
 using App.Core.Core.External.View;
+using App.Core.CubeDragger.External.Animation;
 using App.Core.Utility.External;
 using App.Game.SpriteLoaders.Runtime;
 using UniRx;
@@ -20,6 +21,7 @@ namespace App.Core.Core.External.Presenter
 
         private readonly CompositeDisposable m_Disposables = new();
 
+        private CubeDisappearAnimation m_CubeDisappearAnimation;
         private CoreView m_CoreView;
 
         private CubeView m_View;
@@ -52,6 +54,8 @@ namespace App.Core.Core.External.Presenter
             
             m_View.SetActive(false);
             m_Camera = Camera.main;
+
+            m_CubeDisappearAnimation = new CubeDisappearAnimation(m_CoreUIController, m_CoreView);
             
             Observable.EveryUpdate().Subscribe(OnUpdate).AddTo(m_Disposables);
             
@@ -87,17 +91,20 @@ namespace App.Core.Core.External.Presenter
             
             if (Input.GetMouseButtonUp(0))
             {
+                var isUsed = false;
                 if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
                 {
                     Debug.LogError("Drop cube into TOWER");
+                    isUsed = false;
                 } 
                 else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
                 {
-                    m_HoleController.DropInHole(m_View, m_Config);
+                    isUsed = m_HoleController.DropInHole(m_View, m_Config);
                 }
-                else
+
+                if (!isUsed)
                 {
-                    // todo
+                    m_CubeDisappearAnimation.Disappear(m_View, m_Config);
                 }
                 
                 m_View.SetActive(false);

@@ -94,6 +94,7 @@ namespace App.Core.Core.External
                 return Optional<CubeView>.Fail();
             }
             
+            view.Value.transform.localScale = Vector3.one;
             view.Value.transform.rotation = Quaternion.identity;
             view.Value.SetParent(parent);
 

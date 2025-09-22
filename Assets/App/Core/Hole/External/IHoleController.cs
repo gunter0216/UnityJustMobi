@@ -5,6 +5,6 @@ namespace App.Core.Core.External.Presenter
 {
     public interface IHoleController
     {
-        void DropInHole(CubeView view, CubeConfig config);
+        bool DropInHole(CubeView view, CubeConfig config);
     }
 }
