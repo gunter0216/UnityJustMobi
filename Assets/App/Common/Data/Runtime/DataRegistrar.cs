@@ -12,7 +12,7 @@ namespace App.Common.Data.Runtime
         {
             if (m_DataTypes == null)
             {
-                Debug.LogError("регистрация прошла, иди нахуй");    
+                Debug.LogError("DataRegistrar: trying to register data after finalization");    
             }
             
             var type = typeof(T);
