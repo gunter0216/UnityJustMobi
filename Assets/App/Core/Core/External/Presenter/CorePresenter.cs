@@ -20,6 +20,7 @@ namespace App.Core.Core.External.Presenter
 
         private CoreView m_View;
         private CoreCubesPresenter m_CubesPresenter;
+        private DragCubeController m_DragCubeController;
 
         public CorePresenter(
             IAssetManager assetManager,
@@ -49,8 +50,17 @@ namespace App.Core.Core.External.Presenter
 
         private void InitView()
         {
-            m_CubesPresenter = new CoreCubesPresenter(m_View.CubesView, m_ConfigController, m_SpriteLoader);
+            var cubeViewCreator = new CubeViewCreator(m_View.CubesView);
+            m_DragCubeController = new DragCubeController(cubeViewCreator, m_SpriteLoader, m_View);
+            m_DragCubeController.Initialize();
+            
+            m_CubesPresenter = new CoreCubesPresenter(cubeViewCreator, m_View.CubesView, m_ConfigController, m_SpriteLoader, OnCubeStartDrag);
             m_CubesPresenter.Initialize();
+        }
+        
+        private void OnCubeStartDrag(CubePresenter cubePresenter)
+        {
+            m_DragCubeController.OnCubeStartDrag(cubePresenter);
         }
 
         private bool CreateView()
@@ -69,6 +79,7 @@ namespace App.Core.Core.External.Presenter
 
         public void Dispose()
         {
+            m_DragCubeController?.Dispose();
         }
     }
 }
