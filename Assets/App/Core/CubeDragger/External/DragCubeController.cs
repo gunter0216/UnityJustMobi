@@ -4,6 +4,7 @@ using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter.Fabric;
 using App.Core.Core.External.View;
 using App.Core.CubeDragger.External.Animation;
+using App.Core.Tower.External;
 using App.Core.Utility.External;
 using App.Game.SpriteLoaders.Runtime;
 using UniRx;
@@ -18,6 +19,7 @@ namespace App.Core.Core.External.Presenter
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICoreUIController m_CoreUIController;
         private readonly IHoleController m_HoleController;
+        private readonly ITowerController m_TowerController;
 
         private readonly CompositeDisposable m_Disposables = new();
 
@@ -30,11 +32,16 @@ namespace App.Core.Core.External.Presenter
         private bool m_IsDragging = false;
         private Camera m_Camera;
         
-        public DragCubeController(ISpriteLoader spriteLoader, ICoreUIController coreUIController, IHoleController holeController)
+        public DragCubeController(
+            ISpriteLoader spriteLoader, 
+            ICoreUIController coreUIController, 
+            IHoleController holeController,
+            ITowerController towerController)
         {
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
             m_HoleController = holeController;
+            m_TowerController = towerController;
         }
 
         public void Init()
@@ -94,8 +101,7 @@ namespace App.Core.Core.External.Presenter
                 var isUsed = false;
                 if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
                 {
-                    Debug.LogError("Drop cube into TOWER");
-                    isUsed = false;
+                    isUsed = m_TowerController.DropInTower(m_View, m_Config);
                 } 
                 else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
                 {
