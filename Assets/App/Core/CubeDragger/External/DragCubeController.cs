@@ -1,16 +1,18 @@
 ﻿using System;
 using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.Config;
-using App.Core.Core.External.Presenter.Fabric;
-using App.Core.Core.External.View;
+using App.Core.CoreUI.External;
+using App.Core.CoreUI.External.View;
 using App.Core.CubeDragger.External.Animation;
+using App.Core.Cubes.External.Config;
+using App.Core.CubesPanel.External.Presenter;
+using App.Core.Hole.External;
 using App.Core.Tower.External;
 using App.Core.Utility.External;
 using App.Game.SpriteLoaders.Runtime;
 using UniRx;
 using UnityEngine;
 
-namespace App.Core.Core.External.Presenter
+namespace App.Core.CubeDragger.External
 {
     public class DragCubeController : IInitSystem, IDragCubeController, IDisposable 
     {

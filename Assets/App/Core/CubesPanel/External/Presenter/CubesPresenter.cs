@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using App.Core.Core.External.Presenter.Fabric;
-using App.Core.Core.External.View;
+using App.Core.CoreUI.External;
+using App.Core.CoreUI.External.View;
+using App.Core.Cubes.External;
 using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
-namespace App.Core.Core.External.Presenter
+namespace App.Core.CubesPanel.External.Presenter
 {
     public class CubesPresenter
     {

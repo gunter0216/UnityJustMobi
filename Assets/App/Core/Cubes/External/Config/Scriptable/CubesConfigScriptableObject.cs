@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace App.Core.Core.External.Config.Scriptable
+namespace App.Core.Cubes.External.Config.Scriptable
 {
     [CreateAssetMenu(fileName = "CubesConfig", menuName = "Configs/CubesConfig")]
     public class CubesConfigScriptableObject : ScriptableObject

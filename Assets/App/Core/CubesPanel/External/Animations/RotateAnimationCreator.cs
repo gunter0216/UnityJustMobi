@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace App.Core.Core.External.Animations
+namespace App.Core.CubesPanel.External.Animations
 {
     public class RotateAnimationCreator
     {

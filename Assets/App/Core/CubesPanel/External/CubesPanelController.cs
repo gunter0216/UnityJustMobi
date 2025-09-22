@@ -2,11 +2,14 @@
 using App.Common.Audio.External;
 using App.Common.SceneControllers.Runtime;
 using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.Presenter;
+using App.Core.CoreUI.External;
+using App.Core.CubeDragger.External;
+using App.Core.Cubes.External;
+using App.Core.CubesPanel.External.Presenter;
 using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
-namespace App.Core.Core.External
+namespace App.Core.CubesPanel.External
 {
     public class CubesPanelController : IInitSystem, IDisposable
     {

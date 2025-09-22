@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace App.Core.Core.External.View
+namespace App.Core.CoreUI.External.View
 {
     public class CubeView : MonoBehaviour 
     {

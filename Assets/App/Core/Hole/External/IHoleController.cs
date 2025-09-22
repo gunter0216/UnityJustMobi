@@ -1,7 +1,7 @@
-﻿using App.Core.Core.External.Config;
-using App.Core.Core.External.View;
+﻿using App.Core.CoreUI.External.View;
+using App.Core.Cubes.External.Config;
 
-namespace App.Core.Core.External.Presenter
+namespace App.Core.Hole.External
 {
     public interface IHoleController
     {

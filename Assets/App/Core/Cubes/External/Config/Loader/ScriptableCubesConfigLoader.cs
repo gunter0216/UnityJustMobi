@@ -1,9 +1,9 @@
 ﻿using App.Common.Configs.Runtime;
 using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.Config.Scriptable;
+using App.Core.Cubes.External.Config.Scriptable;
 using UnityEngine;
 
-namespace App.Core.Core.External.Config
+namespace App.Core.Cubes.External.Config.Loader
 {
     public class ScriptableCubesConfigLoader : ICubesConfigLoader
     {

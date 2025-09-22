@@ -2,14 +2,14 @@
 using App.Common.Utilities.Pool.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
-using App.Core.Core.External.Config;
-using App.Core.Core.External.Presenter.Fabric;
-using App.Core.Core.External.View;
+using App.Core.CoreUI.External.Fabric;
+using App.Core.CoreUI.External.View;
+using App.Core.Cubes.External.Config;
+using App.Core.CubesPanel.External.Presenter.Fabric;
 using App.Game.SpriteLoaders.Runtime;
-using Unity.Mathematics;
 using UnityEngine;
 
-namespace App.Core.Core.External
+namespace App.Core.CoreUI.External
 {
     public class CoreUIController : IInitSystem, ICoreUIController
     {

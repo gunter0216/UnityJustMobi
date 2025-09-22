@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace App.Core.Core.External.Config.Dto
+namespace App.Core.Cubes.External.Config.Dto
 {
     [Serializable]
     [JsonObject(MemberSerialization.Fields)]

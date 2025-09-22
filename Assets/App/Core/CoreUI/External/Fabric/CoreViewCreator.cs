@@ -1,9 +1,9 @@
 ﻿using App.Common.AssetSystem.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
-using App.Core.Core.External.View;
+using App.Core.CoreUI.External.View;
 
-namespace App.Core.Core.External.Presenter.Fabric
+namespace App.Core.CoreUI.External.Fabric
 {
     public class CoreViewCreator
     {

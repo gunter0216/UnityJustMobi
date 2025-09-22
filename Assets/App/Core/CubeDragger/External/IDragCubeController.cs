@@ -1,4 +1,6 @@
-﻿namespace App.Core.Core.External.Presenter
+﻿using App.Core.CubesPanel.External.Presenter;
+
+namespace App.Core.CubeDragger.External
 {
     public interface IDragCubeController
     {

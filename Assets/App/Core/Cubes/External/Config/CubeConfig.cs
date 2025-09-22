@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace App.Core.Core.External.Config
+namespace App.Core.Cubes.External.Config
 {
     [Serializable]
     public class CubeConfig

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.Config;
+using App.Core.Cubes.External.Config;
 
-namespace App.Core.Core.External
+namespace App.Core.Cubes.External
 {
     public interface ICubesController
     {

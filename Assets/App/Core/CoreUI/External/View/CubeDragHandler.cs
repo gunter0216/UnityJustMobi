@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace App.Core.Core.External.View
+namespace App.Core.CoreUI.External.View
 {
     public class CubeDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler 
     {

@@ -4,7 +4,7 @@ using App.Common.Utilities.Utility.Runtime.Extensions;
 using DG.Tweening;
 using UnityEngine;
 
-namespace App.Core.Core.External.Animations
+namespace App.Core.CubesPanel.External.Animations
 {
     public class RotateAnimation : IDisposable
     {

@@ -1,8 +1,8 @@
 ﻿using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.View;
+using App.Core.CoreUI.External.View;
 using UnityEngine;
 
-namespace App.Core.Core.External.Presenter.Fabric
+namespace App.Core.CubesPanel.External.Presenter.Fabric
 {
     public class CubeViewCreator
     {

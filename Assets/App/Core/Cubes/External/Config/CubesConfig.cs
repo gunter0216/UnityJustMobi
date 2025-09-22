@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace App.Core.Core.External.Config
+namespace App.Core.Cubes.External.Config
 {
     public class CubesConfig
     {

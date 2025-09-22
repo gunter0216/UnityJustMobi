@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using App.Common.Utilities.Utility.Runtime;
-using App.Core.Core.External.Config;
-using App.Core.Core.External.View;
+﻿using App.Common.Utilities.Utility.Runtime;
+using App.Core.CoreUI.External;
+using App.Core.CoreUI.External.View;
+using App.Core.Cubes.External.Config;
 using App.Core.Hole.External.Animation;
 
-namespace App.Core.Core.External.Presenter
+namespace App.Core.Hole.External
 {
     public class HoleController : IInitSystem, IHoleController 
     {

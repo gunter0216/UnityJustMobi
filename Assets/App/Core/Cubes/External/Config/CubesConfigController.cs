@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using App.Common.Configs.Runtime;
 using App.Common.Utilities.Utility.Runtime;
+using App.Core.Cubes.External.Config.Loader;
 using UnityEngine;
 
-namespace App.Core.Core.External.Config
+namespace App.Core.Cubes.External.Config
 {
     public class CubesConfigController
     {
