@@ -14,21 +14,23 @@ namespace App.Core.Core.External.Presenter
         private readonly ICubesController m_CubesController;
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICoreUIController m_CoreUIController;
+        private readonly IDragCubeController m_DragCubeController;
 
         private CoreView m_View;
         private CubesPresenter m_CubesPresenter;
-        private DragCubeController m_DragCubeController;
 
         public CubesPanelPresenter(
             ISoundManager soundManager,
             ICubesController cubesController, 
             ISpriteLoader spriteLoader,
-            ICoreUIController coreUIController)
+            ICoreUIController coreUIController, 
+            IDragCubeController dragCubeController)
         {
             m_SoundManager = soundManager;
             m_CubesController = cubesController;
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
+            m_DragCubeController = dragCubeController;
         }
 
         public bool Initialize()
@@ -46,8 +48,6 @@ namespace App.Core.Core.External.Presenter
         private void InitView()
         {
             var cubeViewCreator = new CubeViewCreator(m_View.CubesView);
-            m_DragCubeController = new DragCubeController(cubeViewCreator, m_SpriteLoader, m_View);
-            m_DragCubeController.Initialize();
             
             m_CubesPresenter = new CubesPresenter(cubeViewCreator, m_View.CubesView, m_CubesController, m_SpriteLoader, OnCubeStartDrag);
             m_CubesPresenter.Initialize();
@@ -73,7 +73,6 @@ namespace App.Core.Core.External.Presenter
 
         public void Dispose()
         {
-            m_DragCubeController?.Dispose();
         }
     }
 }

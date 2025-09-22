@@ -1,5 +1,5 @@
 ﻿using System;
-using App.Common.Utilities.UtilityUnity.Runtime.Extensions;
+using App.Common.Utilities.Utility.Runtime;
 using App.Core.Core.External.Config;
 using App.Core.Core.External.Presenter.Fabric;
 using App.Core.Core.External.View;
@@ -10,33 +10,42 @@ using UnityEngine;
 
 namespace App.Core.Core.External.Presenter
 {
-    public class DragCubeController : IDisposable
+    public class DragCubeController : IInitSystem, IDragCubeController, IDisposable 
     {
         private const float m_LerpForce = 30f;
         
         private readonly ISpriteLoader m_SpriteLoader;
-        private readonly CubeViewCreator m_CubeViewCreator;
-        private readonly CoreView m_CoreView;
+        private readonly ICoreUIController m_CoreUIController;
 
         private readonly CompositeDisposable m_Disposables = new();
-        
+
+        private CubeViewCreator m_CubeViewCreator;
+        private CoreView m_CoreView;
+
         private CubeView m_View;
         private CubeConfig m_Config;
 
         private bool m_IsDragging = false;
         private Camera m_Camera;
-
-        public CubeConfig Config => m_Config;
         
-        public DragCubeController(CubeViewCreator cubeViewCreator, ISpriteLoader spriteLoader, CoreView coreView)
+        public DragCubeController(ISpriteLoader spriteLoader, ICoreUIController coreUIController)
         {
-            m_CubeViewCreator = cubeViewCreator;
             m_SpriteLoader = spriteLoader;
-            m_CoreView = coreView;
+            m_CoreUIController = coreUIController;
         }
 
-        public void Initialize()
+        public void Init()
         {
+            var view = m_CoreUIController.GetView();
+            if (!view.HasValue)
+            {
+                return;
+            }
+
+            m_CoreView = view.Value;
+            
+            m_CubeViewCreator = new CubeViewCreator(m_CoreView.CubesView);
+            
             if (!CreateView())
             {
                 return;
@@ -103,7 +112,7 @@ namespace App.Core.Core.External.Presenter
 
         private void SetSprite()
         {
-            var sprite = m_SpriteLoader.Load(Config.AssetKey);
+            var sprite = m_SpriteLoader.Load(m_Config.AssetKey);
             if (!sprite.HasValue)
             {
                 Debug.LogError("Cant load sprite for cube");
