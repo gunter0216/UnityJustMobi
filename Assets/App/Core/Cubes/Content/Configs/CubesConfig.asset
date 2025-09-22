@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6165f29dbb446eb70adaea9de11011, type: 3}
+  m_Name: CubesConfig
+  m_EditorClassIdentifier: 
+  m_Cubes:
+  - m_Key: Cube1
+    m_AssetKey: Cube1
+  - m_Key: Cube2
+    m_AssetKey: Cube2
+  - m_Key: Cube3
+    m_AssetKey: Cube3
+  - m_Key: Cube4
+    m_AssetKey: Cube4
+  - m_Key: Cube5
+    m_AssetKey: Cube5
+  - m_Key: Cube6
+    m_AssetKey: Cube6
+  - m_Key: Cube7
+    m_AssetKey: Cube7
+  - m_Key: Cube8
+    m_AssetKey: Cube8
+  - m_Key: Cube9
+    m_AssetKey: Cube9
+  - m_Key: Cube10
+    m_AssetKey: Cube10
+  - m_Key: Cube11
+    m_AssetKey: Cube11
+  - m_Key: Cube12
+    m_AssetKey: Cube12
+  - m_Key: Cube13
+    m_AssetKey: Cube13
+  - m_Key: Cube14
+    m_AssetKey: Cube14
+  - m_Key: Cube15
+    m_AssetKey: Cube15
+  - m_Key: Cube16
+    m_AssetKey: Cube16
+  - m_Key: Cube17
+    m_AssetKey: Cube17
+  - m_Key: Cube18
+    m_AssetKey: Cube18
+  - m_Key: Cube19
+    m_AssetKey: Cube19
+  - m_Key: Cube20
+    m_AssetKey: Cube20
