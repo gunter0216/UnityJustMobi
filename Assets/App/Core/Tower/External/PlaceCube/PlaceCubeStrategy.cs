@@ -84,6 +84,19 @@ namespace App.Core.Tower.External
                         return DropTowerStatus.TowerIsMax;
                     }
                     
+                    var halfWidth = (rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f;
+                    const int maxAttempts = 1000;
+                    for (int i = 0; i < maxAttempts; ++i)
+                    {
+                        var randomOffset = Random.Range(-halfWidth, halfWidth);
+                        view.RectTransform.SetPositionX(newPosition.x + randomOffset);
+                        if (RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
+                        {
+                            newPosition.x += randomOffset;
+                            break;
+                        }
+                    }
+                    
                     view.RectTransform.position = dragCubePosition;
                     
                     return PlaceCube(newPosition, config) ? DropTowerStatus.Added : DropTowerStatus.NotIntersected;
