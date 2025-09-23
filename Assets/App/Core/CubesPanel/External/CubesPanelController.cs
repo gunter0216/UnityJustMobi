@@ -1,9 +1,7 @@
 ﻿using System;
-using App.Common.Audio.External;
-using App.Common.SceneControllers.Runtime;
+using App.Common.Events.External;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.CoreUI.External;
-using App.Core.CubeDragger.External;
 using App.Core.Cubes.External;
 using App.Core.CubesPanel.External.Presenter;
 using App.Game.SpriteLoaders.Runtime;
@@ -13,43 +11,41 @@ namespace App.Core.CubesPanel.External
 {
     public class CubesPanelController : IInitSystem, IDisposable
     {
-        private readonly ISceneManager m_SceneManager;
-        private readonly ISoundManager m_SoundManager;
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICubesController m_CubesController;
         private readonly ICoreUIController m_CoreUIController;
-        private readonly IDragCubeController m_DragCubeController;
+        private readonly IEventManager m_EventManager;
         
         private CubesPanelPresenter m_Presenter;
 
         public CubesPanelController(
-            ISceneManager sceneManager, 
-            ISoundManager soundManager, 
             ISpriteLoader spriteLoader, 
             ICubesController cubesController, 
             ICoreUIController coreUIController, 
-            IDragCubeController dragCubeController)
+            IEventManager eventManager)
         {
-            m_SceneManager = sceneManager;
-            m_SoundManager = soundManager;
             m_SpriteLoader = spriteLoader;
             m_CubesController = cubesController;
             m_CoreUIController = coreUIController;
-            m_DragCubeController = dragCubeController;
+            m_EventManager = eventManager;
         }
 
         public void Init()
         {
             m_Presenter = new CubesPanelPresenter(
-                m_SoundManager,
                 m_CubesController,
                 m_SpriteLoader,
                 m_CoreUIController,
-                m_DragCubeController);
+                OnCubeStartDrag);
             if (!m_Presenter.Initialize())
             {
                 Debug.LogError($"Cant initialize");
             }
+        }
+
+        private void OnCubeStartDrag(TemplateCubePresenter presenter)
+        {
+            m_EventManager.Trigger(new TemplateCubeStartDragEvent(presenter));
         }
 
         public void Dispose()

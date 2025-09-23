@@ -5,6 +5,6 @@ namespace App.Core.Tower.External
 {
     public interface ITowerController
     {
-        DropTowerStatus DropInTower(CubeView view, CubeConfig config);
+        DropOnTowerStatus DropCubeOnTower(CubeView view, CubeConfig config);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using App.Common.Audio.External;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
 using App.Core.CubeDragger.External;
@@ -11,27 +10,24 @@ namespace App.Core.CubesPanel.External.Presenter
 {
     public class CubesPanelPresenter : IDisposable
     {
-        private readonly ISoundManager m_SoundManager;
         private readonly ICubesController m_CubesController;
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICoreUIController m_CoreUIController;
-        private readonly IDragCubeController m_DragCubeController;
+        private event Action<TemplateCubePresenter> m_OnCubeStartDrag;
 
         private CoreView m_View;
         private CubesPresenter m_CubesPresenter;
 
         public CubesPanelPresenter(
-            ISoundManager soundManager,
             ICubesController cubesController, 
             ISpriteLoader spriteLoader,
-            ICoreUIController coreUIController, 
-            IDragCubeController dragCubeController)
+            ICoreUIController coreUIController,
+            Action<TemplateCubePresenter> onCubeStartDrag)
         {
-            m_SoundManager = soundManager;
             m_CubesController = cubesController;
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
-            m_DragCubeController = dragCubeController;
+            m_OnCubeStartDrag = onCubeStartDrag;
         }
 
         public bool Initialize()
@@ -54,7 +50,7 @@ namespace App.Core.CubesPanel.External.Presenter
 
         private void OnCubeStartDrag(TemplateCubePresenter templateCubePresenter)
         {
-            m_DragCubeController.OnCubeStartDrag(templateCubePresenter);
+            m_OnCubeStartDrag?.Invoke(templateCubePresenter);
         }
 
         private bool GetView()

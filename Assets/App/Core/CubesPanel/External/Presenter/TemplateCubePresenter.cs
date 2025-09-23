@@ -10,7 +10,7 @@ namespace App.Core.CubesPanel.External.Presenter
 {
     public class TemplateCubePresenter
     {
-        private const float m_AngleForDrag = 62.5f;
+        private const float m_AngleForDrag = 67.5f;
 
         private readonly CubeView m_View;
         private readonly CubeConfig m_Config;
@@ -59,10 +59,7 @@ namespace App.Core.CubesPanel.External.Presenter
 
         private void OnDrag(PointerEventData eventData)
         {
-            if (m_IsMyDrag)
-            {
-            }
-            else
+            if (!m_IsMyDrag)
             {
                 m_ScrollRect.OnDrag(eventData);
             }
@@ -70,10 +67,7 @@ namespace App.Core.CubesPanel.External.Presenter
 
         private void OnEndDrag(PointerEventData eventData)
         {
-            if (m_IsMyDrag)
-            {
-            }
-            else
+            if (!m_IsMyDrag)
             {
                 m_ScrollRect.OnEndDrag(eventData);
             }

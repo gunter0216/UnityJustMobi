@@ -40,9 +40,9 @@ namespace App.Core.Tower.External.Data
             m_Data.Cubes.Add(cubeData);
         }
         
-        public void RemoveCube(CubeData cubeData)
+        public bool RemoveCube(CubeData cubeData)
         {
-            m_Data.Cubes.Remove(cubeData);
+            return m_Data.Cubes.Remove(cubeData);
         }
     }
 }

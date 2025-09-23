@@ -1,6 +1,6 @@
 ﻿namespace App.Core.Tower.External
 {
-    public enum DropTowerStatus
+    public enum DropOnTowerStatus
     {
         Added,
         TowerIsMax,

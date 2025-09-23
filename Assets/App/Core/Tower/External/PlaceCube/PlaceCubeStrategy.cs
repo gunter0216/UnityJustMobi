@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using App.Common.Utilities.External;
-using App.Common.Utilities.Utility.Runtime;
 using App.Common.Utilities.UtilityUnity.Runtime.Extensions;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
-using App.Core.CubeDragger.External;
 using App.Core.Cubes.External;
 using App.Core.Cubes.External.Config;
 using App.Core.Tower.External.Data;
 using App.Core.Utility.External;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace App.Core.Tower.External
 {
@@ -21,6 +21,7 @@ namespace App.Core.Tower.External
         private readonly TowerDataController m_DataController;
         private readonly ICubesController m_CubesController;
         private readonly Camera m_Camera;
+        private event Action<TowerCubePresenter> m_OnTowerCubeStartDrag;
 
         private List<TowerCubePresenter> m_CubePresenters;
         private TowerView m_TowerView;
@@ -28,11 +29,13 @@ namespace App.Core.Tower.External
         public PlaceCubeStrategy(
             ICoreUIController coreUIController, 
             TowerDataController dataController, 
-            ICubesController cubesController)
+            ICubesController cubesController,
+            Action<TowerCubePresenter> onTowerCubeStartDrag)
         {
             m_CoreUIController = coreUIController;
             m_DataController = dataController;
             m_CubesController = cubesController;
+            m_OnTowerCubeStartDrag = onTowerCubeStartDrag;
 
             m_Camera = Camera.main;
         }
@@ -51,20 +54,20 @@ namespace App.Core.Tower.External
             LoadTowerFromData();
         }
         
-        public DropTowerStatus Place(CubeView view, CubeConfig config)
+        public DropOnTowerStatus Place(CubeView view, CubeConfig config)
         {
             var cubes = m_DataController.GetCubes();
             if (cubes.Count <= 0)
             {
                 if (!RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
                 {
-                    return DropTowerStatus.TowerIsMax;
+                    return DropOnTowerStatus.TowerIsMax;
                 }
                 
                 var position = view.RectTransform.position;
                 return PlaceCube(new Vector3(position.x, position.y, 0), config)
-                    ? DropTowerStatus.Added
-                    : DropTowerStatus.NotIntersected;
+                    ? DropOnTowerStatus.Added
+                    : DropOnTowerStatus.NotIntersected;
             }
 
             Vector2 mousePosition = Input.mousePosition;
@@ -81,7 +84,7 @@ namespace App.Core.Tower.External
                     if (!RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
                     {
                         view.RectTransform.position = dragCubePosition;
-                        return DropTowerStatus.TowerIsMax;
+                        return DropOnTowerStatus.TowerIsMax;
                     }
                     
                     var halfWidth = (rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f;
@@ -99,11 +102,11 @@ namespace App.Core.Tower.External
                     
                     view.RectTransform.position = dragCubePosition;
                     
-                    return PlaceCube(newPosition, config) ? DropTowerStatus.Added : DropTowerStatus.NotIntersected;
+                    return PlaceCube(newPosition, config) ? DropOnTowerStatus.Added : DropOnTowerStatus.NotIntersected;
                 }
             }
 
-            return DropTowerStatus.NotIntersected;
+            return DropOnTowerStatus.NotIntersected;
         }
         
         private void LoadTowerFromData()
@@ -124,8 +127,7 @@ namespace App.Core.Tower.External
                     return;
                 }
                 
-                var towerCube = new TowerCube(cubeData, config.Value);
-                var presenter = new TowerCubePresenter(towerCube, cubeView.Value);
+                var presenter = CreateCubePresenter(cubeData, config.Value, cubeView.Value);
                 m_CubePresenters.Add(presenter);
             }
             
@@ -159,12 +161,38 @@ namespace App.Core.Tower.External
                 PositionY = position.y
             };
             
-            var towerCube = new TowerCube(cubeData, config);
-            var presenter = new TowerCubePresenter(towerCube, cubeView.Value);
+            var presenter = CreateCubePresenter(cubeData, config, cubeView.Value);
             m_CubePresenters.Add(presenter);
             m_DataController.AddCube(cubeData);
 
             return true;
+        }
+
+        private TowerCubePresenter CreateCubePresenter(CubeData data, CubeConfig config, CubeView cubeView)
+        {
+            var towerCube = new TowerCube(data, config);
+            var presenter = new TowerCubePresenter(towerCube, cubeView, OnTowerCubeStartDrag);
+            presenter.Initialize();
+            return presenter;
+        }
+
+        private void OnTowerCubeStartDrag(TowerCubePresenter presenter)
+        {
+            m_OnTowerCubeStartDrag?.Invoke(presenter);
+            m_CoreUIController.DestroyCubeView(presenter.View);
+            if (!m_CubePresenters.Remove(presenter))
+            {
+                foreach (var cubePresenter in m_CubePresenters)
+                {
+                    Debug.LogError($"> {cubePresenter.TowerCube.Data.Key}");   
+                }
+                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove TowerCubePresenter from list.");
+            }
+
+            if (!m_DataController.RemoveCube(presenter.TowerCube.Data))
+            {
+                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove CubeData from TowerDataController.");
+            }
         }
     }
 }

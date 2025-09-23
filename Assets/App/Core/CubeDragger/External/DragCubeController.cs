@@ -1,12 +1,15 @@
 ﻿using System;
+using App.Common.Events.External;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
 using App.Core.CubeDragger.External.Animation;
 using App.Core.Cubes.External.Config;
+using App.Core.CubesPanel.External;
 using App.Core.CubesPanel.External.Presenter;
 using App.Core.Hole.External;
 using App.Core.Tower.External;
+using App.Core.Tower.External.Events;
 using App.Core.Utility.External;
 using App.Game.SpriteLoaders.Runtime;
 using UniRx;
@@ -14,7 +17,7 @@ using UnityEngine;
 
 namespace App.Core.CubeDragger.External
 {
-    public class DragCubeController : IInitSystem, IDragCubeController, IDisposable 
+    public class DragCubeController : IInitSystem, IDisposable 
     {
         private const float m_LerpForce = 30f;
         
@@ -23,6 +26,7 @@ namespace App.Core.CubeDragger.External
         private readonly IHoleController m_HoleController;
         private readonly ITowerController m_TowerController;
         private readonly IMessageController m_MessageController;
+        private readonly IEventManager m_EventManager;
 
         private readonly CompositeDisposable m_Disposables = new();
 
@@ -40,13 +44,15 @@ namespace App.Core.CubeDragger.External
             ICoreUIController coreUIController, 
             IHoleController holeController,
             ITowerController towerController, 
-            IMessageController messageController)
+            IMessageController messageController, 
+            IEventManager eventManager)
         {
             m_SpriteLoader = spriteLoader;
             m_CoreUIController = coreUIController;
             m_HoleController = holeController;
             m_TowerController = towerController;
             m_MessageController = messageController;
+            m_EventManager = eventManager;
         }
 
         public void Init()
@@ -70,24 +76,33 @@ namespace App.Core.CubeDragger.External
             m_CubeDisappearAnimation = new CubeDisappearAnimation(m_CoreUIController, m_CoreView);
             
             Observable.EveryUpdate().Subscribe(OnUpdate).AddTo(m_Disposables);
-            
-            // m_DragHandler = m_View.AddComponent<CubeDragHandler>();
-            // m_DragHandler.SetDragCallback(OnDrag);
-            // m_DragHandler.SetBeginDragCallback(OnBeginDrag);
-            // m_DragHandler.SetEndDragCallback(OnEndDrag);
+            m_EventManager.Subscribe<TemplateCubeStartDragEvent>(OnTemplateCubeStartDrag).AddTo(m_Disposables);
+            m_EventManager.Subscribe<TowerCubeStartDragEvent>(OnTowerCubeStartDrag).AddTo(m_Disposables);
         }
 
-        public void OnCubeStartDrag(TemplateCubePresenter templateCubePresenter)
+        private void OnTowerCubeStartDrag(TowerCubeStartDragEvent dragEvent)
+        {
+            var presenter = dragEvent.Presenter;
+            OnCubeStartDrag(presenter.TowerCube.Config, presenter.GetGlobalPosition());
+        }
+
+        private void OnTemplateCubeStartDrag(TemplateCubeStartDragEvent dragEvent)
+        {
+            var presenter = dragEvent.Presenter;
+            OnCubeStartDrag(presenter.Config, presenter.GetGlobalPosition());
+        }
+
+        private void OnCubeStartDrag(CubeConfig config, Vector3 position)
         {
             if (m_IsDragging)
             {
                 return;
             }
             
-            m_Config = templateCubePresenter.Config;
+            m_Config = config;
             m_IsDragging = true;
             m_View.SetActive(true);
-            m_View.SetGlobalPosition(templateCubePresenter.GetGlobalPosition());
+            m_View.SetGlobalPosition(position);
 
             SetSprite();
         }
@@ -106,7 +121,7 @@ namespace App.Core.CubeDragger.External
                 var isUsed = false;
                 if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
                 {
-                    isUsed = m_TowerController.DropInTower(m_View, m_Config) != DropTowerStatus.NotIntersected;
+                    isUsed = m_TowerController.DropCubeOnTower(m_View, m_Config) != DropOnTowerStatus.NotIntersected;
                 } 
                 else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
                 {
