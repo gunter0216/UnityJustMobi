@@ -53,13 +53,23 @@ namespace App.Core.Tower.External
                 return;
             }
             
-            m_PlaceCubeStrategy = new PlaceCubeStrategy(m_CoreUIController, m_DataController);
+            m_PlaceCubeStrategy = new PlaceCubeStrategy(m_CoreUIController, m_DataController, m_CubesController);
             m_PlaceCubeStrategy.Initialize();
         }
 
-        public bool DropInTower(CubeView view, CubeConfig config)
+        public DropTowerStatus DropInTower(CubeView view, CubeConfig config)
         {
-            return m_PlaceCubeStrategy.Place(view, config);
+            var status = m_PlaceCubeStrategy.Place(view, config);
+            if (status == DropTowerStatus.Added)
+            {
+                m_MessageController.ShowMessage("Placed");
+            } 
+            else if (status == DropTowerStatus.TowerIsMax)
+            {
+                m_MessageController.ShowMessage("Max tower");
+            }
+            
+            return status;
         }
     }
 }

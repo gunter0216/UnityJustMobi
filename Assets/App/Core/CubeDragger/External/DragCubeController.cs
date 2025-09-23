@@ -106,7 +106,7 @@ namespace App.Core.CubeDragger.External
                 var isUsed = false;
                 if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
                 {
-                    isUsed = m_TowerController.DropInTower(m_View, m_Config);
+                    isUsed = m_TowerController.DropInTower(m_View, m_Config) != DropTowerStatus.NotIntersected;
                 } 
                 else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
                 {
