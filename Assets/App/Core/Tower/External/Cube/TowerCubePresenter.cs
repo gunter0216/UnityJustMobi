@@ -14,6 +14,7 @@ namespace App.Core.Tower.External
         private readonly Action<TowerCubePresenter> m_OnStartDrag;
 
         private CubeDragHandler m_DragHandler;
+        private bool m_IsDestroyed = false;
         
         public TowerCube TowerCube => m_TowerCube;
         public CubeView View => m_View;
@@ -38,12 +39,22 @@ namespace App.Core.Tower.External
 
         private void OnBeginDrag(PointerEventData eventData)
         {
+            if (m_IsDestroyed)
+            {
+                return;
+            }
+            
             m_OnStartDrag?.Invoke(this);
         }
         
         public Vector3 GetGlobalPosition()
         {
             return m_View.GetGlobalPosition();
+        }
+        
+        public void Destroy()
+        {
+            m_IsDestroyed = true;
         }
     }
 }

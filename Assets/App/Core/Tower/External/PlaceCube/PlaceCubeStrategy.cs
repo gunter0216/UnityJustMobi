@@ -10,6 +10,7 @@ using App.Core.Cubes.External;
 using App.Core.Cubes.External.Config;
 using App.Core.Tower.External.Data;
 using App.Core.Utility.External;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,6 +26,7 @@ namespace App.Core.Tower.External
 
         private List<TowerCubePresenter> m_CubePresenters;
         private TowerView m_TowerView;
+        private bool m_AnimationInProgress = false;
 
         public PlaceCubeStrategy(
             ICoreUIController coreUIController, 
@@ -56,6 +58,11 @@ namespace App.Core.Tower.External
         
         public DropOnTowerStatus Place(CubeView view, CubeConfig config)
         {
+            if (m_AnimationInProgress)
+            {
+                return DropOnTowerStatus.NotIntersected;
+            }
+
             var cubes = m_DataController.GetCubes();
             if (cubes.Count <= 0)
             {
@@ -178,14 +185,43 @@ namespace App.Core.Tower.External
 
         private void OnTowerCubeStartDrag(TowerCubePresenter presenter)
         {
+            if (m_AnimationInProgress)
+            {
+                return;
+            }
+            
+            var presenterIndex = m_CubePresenters.IndexOf(presenter);
+            if (presenterIndex < 0)
+            {
+                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, not found TowerCubePresenter in list.");
+                return;
+            }
+            
             m_OnTowerCubeStartDrag?.Invoke(presenter);
+
+            if (presenterIndex != m_CubePresenters.Count - 1)
+            {
+                m_AnimationInProgress = true;
+                const float duration = 0.25f;
+                for (int i = presenterIndex; i < m_CubePresenters.Count; ++i)
+                {
+                    var cubePresenter = m_CubePresenters[i];
+                    var data = cubePresenter.TowerCube.Data;
+                    var rectTransform = cubePresenter.View.RectTransform;
+                    var newPosition = rectTransform.position + Vector3.down * (rectTransform.rect.height * rectTransform.lossyScale.y);
+                    rectTransform.DOMoveY(newPosition.y, duration);
+                    data.PositionX = newPosition.x;
+                    data.PositionY = newPosition.y;
+                } 
+            
+                DOTween.Sequence()
+                    .AppendInterval(duration)
+                    .AppendCallback(() => m_AnimationInProgress = false);
+            }
+            
             m_CoreUIController.DestroyCubeView(presenter.View);
             if (!m_CubePresenters.Remove(presenter))
             {
-                foreach (var cubePresenter in m_CubePresenters)
-                {
-                    Debug.LogError($"> {cubePresenter.TowerCube.Data.Key}");   
-                }
                 Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove TowerCubePresenter from list.");
             }
 
@@ -193,6 +229,8 @@ namespace App.Core.Tower.External
             {
                 Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove CubeData from TowerDataController.");
             }
+            
+            presenter.Destroy();
         }
     }
 }
