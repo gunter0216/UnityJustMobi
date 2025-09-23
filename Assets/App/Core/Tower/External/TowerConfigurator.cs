@@ -2,6 +2,7 @@
 using App.Core.Startups.External;
 using App.Core.Startups.External.Attributes;
 using App.Core.Startups.External.Constants;
+using App.Core.Tower.External.Data;
 
 namespace App.Core.Tower.External
 {
