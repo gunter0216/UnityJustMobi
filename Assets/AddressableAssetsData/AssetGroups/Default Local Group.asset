@@ -37,11 +37,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9ee7c6ece4e44db28e95f8516d7e22cc
-    m_Address: TapSound
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d40bfcdbb63146bd9586dceddf04aa00
     m_Address: CubesConfigJson
     m_ReadOnly: 0
