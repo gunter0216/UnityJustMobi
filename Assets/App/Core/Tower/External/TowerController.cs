@@ -12,6 +12,7 @@ using App.Core.Tower.External.Cube;
 using App.Core.Tower.External.Data;
 using App.Core.Tower.External.Events;
 using App.Core.Tower.External.PlaceCube;
+using App.Core.Tower.External.Presenter;
 using App.Core.Utility.External;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ namespace App.Core.Tower.External
         private TowerView m_View;
         
         private List<TowerCubePresenter> m_CubePresenters;
+        private TowerPresenter m_TowerPresenter;
 
         public TowerController(
             ICoreUIController coreUIController, 
@@ -65,11 +67,18 @@ namespace App.Core.Tower.External
                 return;
             }
             
+            m_TowerPresenter = new TowerPresenter(
+                m_DataController, 
+                m_View,
+                m_CubesController,
+                m_CoreUIController,
+                TowerCubeStartDrag);
+            m_TowerPresenter.Initialize();
+            
             m_PlaceCubeStrategy = new PlaceCubeStrategy(
                 m_CoreUIController, 
-                m_DataController, 
-                m_CubesController,
-                TowerCubeStartDrag);
+                m_DataController,
+                m_TowerPresenter);
             m_PlaceCubeStrategy.Initialize();
         }
 

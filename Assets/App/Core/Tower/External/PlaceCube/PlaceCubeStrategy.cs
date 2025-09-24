@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using App.Common.Utilities.External;
-using App.Common.Utilities.Utility.Runtime;
+﻿using App.Common.Utilities.Utility.Runtime;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
-using App.Core.Cubes.External;
 using App.Core.Cubes.External.Config;
 using App.Core.Tower.External.Cube;
 using App.Core.Tower.External.Data;
+using App.Core.Tower.External.Presenter;
 using App.Core.Utility.External;
 using DG.Tweening;
 using UnityEngine;
@@ -21,23 +16,19 @@ namespace App.Core.Tower.External.PlaceCube
     {
         private readonly ICoreUIController m_CoreUIController;
         private readonly TowerDataController m_DataController;
-        private readonly ICubesController m_CubesController;
+        private readonly TowerPresenter m_TowerPresenter;
         private readonly Camera m_Camera;
-        private event Action<TowerCubePresenter> m_OnTowerCubeStartDrag;
 
-        private List<TowerCubePresenter> m_CubePresenters;
         private TowerView m_TowerView;
 
         public PlaceCubeStrategy(
             ICoreUIController coreUIController, 
-            TowerDataController dataController, 
-            ICubesController cubesController,
-            Action<TowerCubePresenter> onTowerCubeStartDrag)
+            TowerDataController dataController,
+            TowerPresenter towerPresenter)
         {
             m_CoreUIController = coreUIController;
             m_DataController = dataController;
-            m_CubesController = cubesController;
-            m_OnTowerCubeStartDrag = onTowerCubeStartDrag;
+            m_TowerPresenter = towerPresenter;
 
             m_Camera = Camera.main;
         }
@@ -51,9 +42,6 @@ namespace App.Core.Tower.External.PlaceCube
             }
             
             m_TowerView = view.Value.TowerView;
-            m_CubePresenters = new List<TowerCubePresenter>();
-
-            LoadTowerFromData();
         }
         
         public DropOnTowerStatus Place(CubeView view, CubeConfig config)
@@ -133,7 +121,7 @@ namespace App.Core.Tower.External.PlaceCube
 
         private bool CanPlaceCubeInPosition(Vector3 newPosition)
         {
-            var last = m_CubePresenters.Last();
+            var last = m_TowerPresenter.GetLastCube();
             var rectTransform = last.View.RectTransform;
             var lastPosition = rectTransform.position;
             rectTransform.position = newPosition;
@@ -145,7 +133,7 @@ namespace App.Core.Tower.External.PlaceCube
 
         private Vector3 GetNextCubePosition()
         {
-            var last = m_CubePresenters.Last();
+            var last = m_TowerPresenter.GetLastCube();
             var rectTransform = last.View.RectTransform;
             var data = last.TowerCube.Data;
             var position = new Vector3(data.PositionX, data.PositionY, 0);
@@ -155,7 +143,7 @@ namespace App.Core.Tower.External.PlaceCube
         
         private float GetHalfCubeWidth()
         {
-            var last = m_CubePresenters.Last();
+            var last = m_TowerPresenter.GetLastCube();
             var rectTransform = last.View.RectTransform;
             var halfWidth = (rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f;
             return halfWidth;
@@ -164,7 +152,7 @@ namespace App.Core.Tower.External.PlaceCube
         private bool IsDropOnTower(CubeView view)
         {
             Vector2 mousePosition = Input.mousePosition;
-            foreach (var cubePresenter in m_CubePresenters)
+            foreach (var cubePresenter in m_TowerPresenter.GetCubes())
             {
                 var rect = cubePresenter.View.RectTransform;
                 if (RectTransformUtility.RectangleContainsScreenPoint(rect, mousePosition, m_Camera))
@@ -174,41 +162,6 @@ namespace App.Core.Tower.External.PlaceCube
             }
 
             return false;
-        }
-
-        private void LoadTowerFromData()
-        {
-            foreach (var cubeData in m_DataController.GetCubes())
-            {
-                var config = m_CubesController.GetCubeConfig(cubeData.Key);
-                if (!config.HasValue)
-                {
-                    Debug.LogError($"[PlaceCubeStrategy] In method LoadTowerFromData, not found CubeConfig by key {cubeData.Key}.");
-                    continue;
-                }
-                
-                var cubeView = m_CoreUIController.CreateCubeView(m_TowerView.RectTransform, config.Value);
-                if (!cubeView.HasValue)
-                {
-                    Debug.LogError("[PlaceCubeStrategy] In method PlaceCube, error create CubeView.");
-                    return;
-                }
-                
-                var presenter = CreateCubePresenter(cubeData, config.Value, cubeView.Value);
-                m_CubePresenters.Add(presenter);
-            }
-            
-            GlobalCoroutineProvider.DoCoroutine(UpdateCubesPosition());
-        }
-
-        private IEnumerator UpdateCubesPosition()
-        {
-            yield return new WaitForEndOfFrame();
-            foreach (var cubePresenter in m_CubePresenters)
-            {
-                var data = cubePresenter.TowerCube.Data;
-                cubePresenter.View.SetGlobalPosition(new Vector3(data.PositionX, data.PositionY, 0));
-            }
         }
 
         private Optional<TowerCubePresenter> PlaceCube(Vector3 position, CubeConfig config)
@@ -228,68 +181,9 @@ namespace App.Core.Tower.External.PlaceCube
                 PositionY = position.y
             };
             
-            var presenter = CreateCubePresenter(cubeData, config, cubeView.Value);
-            m_CubePresenters.Add(presenter);
-            m_DataController.AddCube(cubeData);
+            var presenter = m_TowerPresenter.CreateCubePresenter(cubeData, config, cubeView.Value);
 
             return Optional<TowerCubePresenter>.Success(presenter);
-        }
-
-        private TowerCubePresenter CreateCubePresenter(CubeData data, CubeConfig config, CubeView cubeView)
-        {
-            var towerCube = new TowerCube(data, config);
-            var presenter = new TowerCubePresenter(towerCube, cubeView, OnTowerCubeStartDrag);
-            presenter.Initialize();
-            return presenter;
-        }
-
-        private void OnTowerCubeStartDrag(TowerCubePresenter presenter)
-        {
-            var presenterIndex = m_CubePresenters.IndexOf(presenter);
-            if (presenterIndex < 0)
-            {
-                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, not found TowerCubePresenter in list.");
-                return;
-            }
-            
-            m_OnTowerCubeStartDrag?.Invoke(presenter);
-
-            PlayFallAnimation(presenterIndex);
-            
-            m_CoreUIController.DestroyCubeView(presenter.View);
-            if (!m_CubePresenters.Remove(presenter))
-            {
-                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove TowerCubePresenter from list.");
-            }
-
-            if (!m_DataController.RemoveCube(presenter.TowerCube.Data))
-            {
-                Debug.LogError("[PlaceCubeStrategy] In method OnTowerCubeStartDrag, error remove CubeData from TowerDataController.");
-            }
-            
-            presenter.Destroy();
-        }
-
-        private void PlayFallAnimation(int startIndex)
-        {
-            if (startIndex == m_CubePresenters.Count - 1)
-            {
-                return;
-            }
-
-            const float duration = 0.20f;
-            for (int i = startIndex; i < m_CubePresenters.Count; ++i)
-            {
-                var cubePresenter = m_CubePresenters[i];
-                var data = cubePresenter.TowerCube.Data;
-                var rectTransform = cubePresenter.View.RectTransform;
-                var previousPosition = new Vector3(data.PositionX, data.PositionY, 0);
-                var newPosition = previousPosition +
-                                  Vector3.down * (rectTransform.rect.height * rectTransform.lossyScale.y);
-                rectTransform.DOMoveY(newPosition.y, duration);
-                data.PositionX = newPosition.x;
-                data.PositionY = newPosition.y;
-            }
         }
 
         private bool IsRectOnBackground(CubeView view)
