@@ -1,9 +1,11 @@
-﻿using App.Common.FSM.Runtime;
-using App.Common.SceneControllers.Runtime;
+﻿using App.Common.SceneControllers.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 
 namespace App.Core.StartScene.External
 {
+    /// <summary>
+    /// Отвечает за загрузку основной сцены из стартовой
+    /// </summary>
     public class StartSceneController  : IInitSystem
     {
         private readonly ISceneManager m_SceneManager;

@@ -6,6 +6,9 @@ using App.Core.Menu.External.Animations;
 
 namespace App.Core.CubeDragger.External
 {
+    /// <summary>
+    /// Отвечает за показ сообщений на экране
+    /// </summary>
     public class MessageController : IInitSystem, IMessageController
     {
         private readonly MainCanvas m_MainCanvas;

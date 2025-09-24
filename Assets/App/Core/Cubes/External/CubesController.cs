@@ -7,6 +7,11 @@ using UnityEngine;
 
 namespace App.Core.Cubes.External
 {
+    /// <summary>
+    /// Хранение и загрузку конфигураций кубов.
+    /// Здесь есть закомментированная строка для загрузки из JSON файла вместо ScriptableObject.
+    /// При необходимости можно раскомментировать и использовать.
+    /// </summary>
     public class CubesController : IInitSystem, ICubesController
     {
         private readonly IConfigLoader m_ConfigLoader;

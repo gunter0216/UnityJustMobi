@@ -9,7 +9,10 @@ using UnityEngine;
 
 namespace App.Core.CubesPanel.External
 {
-    public class CubesPanelController : IInitSystem, IDisposable
+    /// <summary>
+    /// Отвечает за панель кубов. Поднятие кубика, но не его перемещение, только тригерит событие
+    /// </summary>
+    public class CubesPanelController : IInitSystem
     {
         private readonly ISpriteLoader m_SpriteLoader;
         private readonly ICubesController m_CubesController;
@@ -46,11 +49,6 @@ namespace App.Core.CubesPanel.External
         private void OnCubeStartDrag(TemplateCubePresenter presenter)
         {
             m_EventManager.Trigger(new TemplateCubeStartDragEvent(presenter));
-        }
-
-        public void Dispose()
-        {
-            m_Presenter?.Dispose();
         }
     }
 }

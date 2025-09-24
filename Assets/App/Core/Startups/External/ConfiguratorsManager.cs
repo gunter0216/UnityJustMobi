@@ -10,6 +10,9 @@ using Zenject;
 
 namespace App.Core.Startups.External
 {
+    /// <summary>
+    /// Отвечает за хранение и запуск конфигураторов, которые закидывают своим классы в DI контейнер, регистрируют их в FSM и DataRegistrar
+    /// </summary>
     public class ConfiguratorsManager
     {
         private readonly FSMRegistrar m_FsmRegistrar;

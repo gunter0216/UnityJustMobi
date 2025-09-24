@@ -9,10 +9,14 @@ using App.Core.Cubes.External;
 using App.Core.Cubes.External.Config;
 using App.Core.Tower.External.Data;
 using App.Core.Tower.External.Events;
+using App.Core.Utility.External;
 using UnityEngine;
 
 namespace App.Core.Tower.External
 {
+    /// <summary>
+    /// Отвечает за управление башней, добавление и удаление кубов.
+    /// </summary>
     public class TowerController : IInitSystem, ITowerController 
     {
         private readonly ICoreUIController m_CoreUIController;

@@ -8,6 +8,9 @@ using Zenject;
 
 namespace App.Core.Startups.External
 {
+    /// <summary>
+    /// Startup для стартовой сцены
+    /// </summary>
     public class StartSceneStartup : MonoInstaller<StartSceneStartup>
     {
         [SerializeField] private MainCanvas m_MainCanvas;

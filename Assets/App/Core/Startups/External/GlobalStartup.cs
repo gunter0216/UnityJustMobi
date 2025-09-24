@@ -7,6 +7,9 @@ using Zenject;
 
 namespace App.Core.Startups.External
 {
+    /// <summary>
+    /// Глобальный стартап, который отвечает за инициализацию всех конфигураторов
+    /// </summary>
     public class GlobalStartup : MonoInstaller<StartSceneStartup>
     {
         public override void InstallBindings()

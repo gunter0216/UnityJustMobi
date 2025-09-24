@@ -4,6 +4,9 @@ using Zenject;
 
 namespace App.Core.Startups.External
 {
+    /// <summary>
+    /// Базовый класс для всех конфигураторов
+    /// </summary>
     public abstract class Configurator
     {
         private DiContainer m_Container;

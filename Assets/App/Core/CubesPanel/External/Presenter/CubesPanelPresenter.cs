@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace App.Core.CubesPanel.External.Presenter
 {
-    public class CubesPanelPresenter : IDisposable
+    public class CubesPanelPresenter
     {
         private readonly ICubesController m_CubesController;
         private readonly ISpriteLoader m_SpriteLoader;
@@ -64,10 +64,6 @@ namespace App.Core.CubesPanel.External.Presenter
             
             m_View = view.Value;
             return true;
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

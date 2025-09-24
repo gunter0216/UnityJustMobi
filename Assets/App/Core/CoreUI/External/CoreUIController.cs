@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace App.Core.CoreUI.External
 {
+    /// <summary>
+    /// Отвечает за создание основного UI (CoreView) и создание кубиков (CubeView), а так же их уничтожения.
+    /// </summary>
     public class CoreUIController : IInitSystem, ICoreUIController
     {
         private readonly MainCanvas m_MainCanvas;

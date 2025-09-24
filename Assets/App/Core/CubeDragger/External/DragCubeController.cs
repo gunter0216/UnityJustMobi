@@ -17,6 +17,10 @@ using UnityEngine;
 
 namespace App.Core.CubeDragger.External
 {
+    /// <summary>
+    /// Отвечает за перетаскивание кубов из панели и башни.
+    /// При отпускании пытается закинуть в башню, потом в дыру и если не получается, уничтожает.
+    /// </summary>
     public class DragCubeController : IInitSystem, IDisposable 
     {
         private const float m_LerpForce = 30f;
@@ -118,15 +122,11 @@ namespace App.Core.CubeDragger.External
             
             if (Input.GetMouseButtonUp(0))
             {
-                var isUsed = false;
-                if (RectBoundsChecker.IsRectCompletelyInside(m_View.RectTransform, m_CoreView.TowerView.RectTransform))
-                {
-                    isUsed = m_TowerController.DropCubeOnTower(m_View, m_Config) != DropOnTowerStatus.NotIntersected;
-                } 
-                else if (OvalSquareCollision.IsSquareIntersectingOval(m_View.RectTransform, m_CoreView.HoleView.RectTransform))
+                var isUsed = m_TowerController.DropCubeOnTower(m_View, m_Config) != DropOnTowerStatus.NotIntersected;
+                if (!isUsed)
                 {
                     isUsed = m_HoleController.DropInHole(m_View, m_Config);
-                }
+                } 
 
                 if (!isUsed)
                 {
