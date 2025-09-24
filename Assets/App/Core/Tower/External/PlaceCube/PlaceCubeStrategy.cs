@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using App.Common.Utilities.External;
 using App.Common.Utilities.Utility.Runtime;
-using App.Common.Utilities.UtilityUnity.Runtime.Extensions;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
 using App.Core.Cubes.External;
@@ -58,69 +57,125 @@ namespace App.Core.Tower.External
         
         public DropOnTowerStatus Place(CubeView view, CubeConfig config)
         {
+            if (!IsRectOnBackground(view))
+            {
+                return DropOnTowerStatus.NotIntersected;
+            }
+            
             var cubes = m_DataController.GetCubes();
             if (cubes.Count <= 0)
             {
-                if (!RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
-                {
-                    return DropOnTowerStatus.TowerIsMax;
-                }
-                
-                var position = view.RectTransform.position;
-                return PlaceCube(new Vector3(position.x, position.y, 0), config).HasValue
-                    ? DropOnTowerStatus.Added
-                    : DropOnTowerStatus.NotIntersected;
+                return PlaceFirstCube(view, config);
+            }
+            
+            return PlaceNextCube(view, config);
+        }
+        
+        private DropOnTowerStatus PlaceFirstCube(CubeView view, CubeConfig config)
+        {
+            var position = view.RectTransform.position;
+            var placeCube = PlaceCube(new Vector3(position.x, position.y, 0), config);
+            return placeCube.HasValue ? DropOnTowerStatus.Added : DropOnTowerStatus.NotIntersected;
+        }
+
+        private DropOnTowerStatus PlaceNextCube(CubeView view, CubeConfig config)
+        {
+            if (!IsDropOnTower(view))
+            {
+                return DropOnTowerStatus.NotIntersected;
+            }
+            
+            var newPosition = GetNextCubePosition();
+            if (!CanPlaceCubeInPosition(newPosition))
+            {
+                return DropOnTowerStatus.TowerIsMax;
             }
 
+            newPosition = AddXOffset(newPosition);
+
+            var presenter = PlaceCube(newPosition, config);
+            if (!presenter.HasValue)
+            {
+                return DropOnTowerStatus.NotIntersected;
+            }
+            
+            PlayJumpAnimation(view, presenter.Value, newPosition);
+
+            return presenter.HasValue ? DropOnTowerStatus.Added : DropOnTowerStatus.NotIntersected;
+        }
+
+        private void PlayJumpAnimation(CubeView view, TowerCubePresenter presenter, Vector3 newPosition)
+        {
+            const float duration = 0.20f;
+            var dragCubePosition = view.RectTransform.position;
+            presenter.View.SetGlobalPosition(dragCubePosition);
+            presenter.View.RectTransform.DOJump(newPosition, 1, 1, duration);
+        }
+
+        private Vector3 AddXOffset(Vector3 position)
+        {
+            const int maxAttempts = 1000;
+            var halfWidth = GetHalfCubeWidth();
+            var newPosition = position;
+            for (int i = 0; i < maxAttempts; ++i)
+            {
+                var randomOffset = Random.Range(-halfWidth, halfWidth);
+                newPosition.x = position.x + randomOffset;
+                if (CanPlaceCubeInPosition(newPosition))
+                {
+                    newPosition.x += randomOffset;
+                    break;
+                }
+            }
+
+            return newPosition;
+        }
+
+        private bool CanPlaceCubeInPosition(Vector3 newPosition)
+        {
+            var last = m_CubePresenters.Last();
+            var rectTransform = last.View.RectTransform;
+            var lastPosition = rectTransform.position;
+            rectTransform.position = newPosition;
+            var isRectOnBackground = IsRectOnBackground(last.View);
+            rectTransform.position = lastPosition;
+
+            return isRectOnBackground;
+        }
+
+        private Vector3 GetNextCubePosition()
+        {
+            var last = m_CubePresenters.Last();
+            var rectTransform = last.View.RectTransform;
+            var data = last.TowerCube.Data;
+            var position = new Vector3(data.PositionX, data.PositionY, 0);
+            var newPosition = position + Vector3.up * (rectTransform.rect.height * rectTransform.lossyScale.y);
+            return newPosition;
+        }
+        
+        private float GetHalfCubeWidth()
+        {
+            var last = m_CubePresenters.Last();
+            var rectTransform = last.View.RectTransform;
+            var halfWidth = (rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f;
+            return halfWidth;
+        }
+
+        private bool IsDropOnTower(CubeView view)
+        {
             Vector2 mousePosition = Input.mousePosition;
             foreach (var cubePresenter in m_CubePresenters)
             {
-                if (RectTransformUtility.RectangleContainsScreenPoint(cubePresenter.View.RectTransform, mousePosition, m_Camera))
+                var rect = cubePresenter.View.RectTransform;
+                if (RectTransformUtility.RectangleContainsScreenPoint(rect, mousePosition, m_Camera))
                 {
-                    var last = m_CubePresenters.Last();
-                    var rectTransform = last.View.RectTransform;
-                    var lastCubeData = last.TowerCube.Data;
-                    var lastCubePosition = new Vector3(lastCubeData.PositionX, lastCubeData.PositionY, 0);
-                    var dragCubePosition = view.RectTransform.position;
-                    var newPosition = lastCubePosition + Vector3.up * (rectTransform.rect.height * rectTransform.lossyScale.y);
-                    view.RectTransform.position = newPosition;
-                    
-                    if (!RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
-                    {
-                        view.RectTransform.position = dragCubePosition;
-                        return DropOnTowerStatus.TowerIsMax;
-                    }
-                    
-                    var halfWidth = (rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f;
-                    const int maxAttempts = 1000;
-                    for (int i = 0; i < maxAttempts; ++i)
-                    {
-                        var randomOffset = Random.Range(-halfWidth, halfWidth);
-                        view.RectTransform.SetPositionX(newPosition.x + randomOffset);
-                        if (RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform))
-                        {
-                            newPosition.x += randomOffset;
-                            break;
-                        }
-                    }
-                    
-                    view.RectTransform.position = dragCubePosition;
-
-                    var presenter = PlaceCube(newPosition, config);
-                    presenter.Value.View.SetGlobalPosition(dragCubePosition);
-                    if (presenter.HasValue)
-                    {
-                        const float duration = 0.20f;
-                        presenter.Value.View.RectTransform.DOJump(newPosition, 1, 1, duration);
-                    }
-                    
-                    return presenter.HasValue ? DropOnTowerStatus.Added : DropOnTowerStatus.NotIntersected;
+                    return true;
                 }
             }
 
-            return DropOnTowerStatus.NotIntersected;
+            return false;
         }
-        
+
         private void LoadTowerFromData()
         {
             foreach (var cubeData in m_DataController.GetCubes())
@@ -199,21 +254,7 @@ namespace App.Core.Tower.External
             
             m_OnTowerCubeStartDrag?.Invoke(presenter);
 
-            if (presenterIndex != m_CubePresenters.Count - 1)
-            {
-                const float duration = 0.20f;
-                for (int i = presenterIndex; i < m_CubePresenters.Count; ++i)
-                {
-                    var cubePresenter = m_CubePresenters[i];
-                    var data = cubePresenter.TowerCube.Data;
-                    var rectTransform = cubePresenter.View.RectTransform;
-                    var previousPosition = new Vector3(data.PositionX, data.PositionY, 0);
-                    var newPosition = previousPosition + Vector3.down * (rectTransform.rect.height * rectTransform.lossyScale.y);
-                    rectTransform.DOMoveY(newPosition.y, duration);
-                    data.PositionX = newPosition.x;
-                    data.PositionY = newPosition.y;
-                } 
-            }
+            PlayFallAnimation(presenterIndex);
             
             m_CoreUIController.DestroyCubeView(presenter.View);
             if (!m_CubePresenters.Remove(presenter))
@@ -227,6 +268,33 @@ namespace App.Core.Tower.External
             }
             
             presenter.Destroy();
+        }
+
+        private void PlayFallAnimation(int startIndex)
+        {
+            if (startIndex == m_CubePresenters.Count - 1)
+            {
+                return;
+            }
+
+            const float duration = 0.20f;
+            for (int i = startIndex; i < m_CubePresenters.Count; ++i)
+            {
+                var cubePresenter = m_CubePresenters[i];
+                var data = cubePresenter.TowerCube.Data;
+                var rectTransform = cubePresenter.View.RectTransform;
+                var previousPosition = new Vector3(data.PositionX, data.PositionY, 0);
+                var newPosition = previousPosition +
+                                  Vector3.down * (rectTransform.rect.height * rectTransform.lossyScale.y);
+                rectTransform.DOMoveY(newPosition.y, duration);
+                data.PositionX = newPosition.x;
+                data.PositionY = newPosition.y;
+            }
+        }
+
+        private bool IsRectOnBackground(CubeView view)
+        {
+            return RectBoundsChecker.IsRectCompletelyInside(view.RectTransform, m_TowerView.RectTransform);
         }
     }
 }
