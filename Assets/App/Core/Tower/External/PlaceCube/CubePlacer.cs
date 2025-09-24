@@ -13,12 +13,17 @@ namespace App.Core.Tower.External.PlaceCube
     {
         private readonly ICoreUIController m_CoreUIController;
         private readonly TowerPresenter m_TowerPresenter;
+        private readonly CubeIntersectionChecker m_CubeIntersectionChecker;
         private TowerView m_TowerView;
 
-        public CubePlacer(ICoreUIController coreUIController, TowerPresenter towerPresenter)
+        public CubePlacer(
+            ICoreUIController coreUIController, 
+            TowerPresenter towerPresenter,
+            CubeIntersectionChecker cubeIntersectionChecker)
         {
             m_CoreUIController = coreUIController;
             m_TowerPresenter = towerPresenter;
+            m_CubeIntersectionChecker = cubeIntersectionChecker;
         }
 
         public void Initialize(TowerView towerView)
@@ -79,8 +84,9 @@ namespace App.Core.Tower.External.PlaceCube
             var rectTransform = last.View.RectTransform;
             var lastPosition = rectTransform.position;
             rectTransform.position = newPosition;
+            var isRectOnBackground = m_CubeIntersectionChecker.IsRectOnBackground(last.View);
             rectTransform.position = lastPosition;
-            return true;
+            return isRectOnBackground;
         }
 
         private Vector3 GetNextCubePosition()
@@ -115,6 +121,7 @@ namespace App.Core.Tower.External.PlaceCube
                     break;
                 }
             }
+            
             return newPosition;
         }
     }

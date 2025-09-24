@@ -42,11 +42,11 @@ namespace App.Core.Tower.External.PlaceCube
                 return;
             }
             m_TowerView = view.Value.TowerView;
-            m_CubePlacer = new CubePlacer(m_CoreUIController, m_TowerPresenter);
+            m_CubeIntersectionChecker = new CubeIntersectionChecker(m_TowerView);
+            m_CubePlacer = new CubePlacer(m_CoreUIController, m_TowerPresenter, m_CubeIntersectionChecker);
             m_CubePlacer.Initialize(m_TowerView);
             m_JumpCubeAnimation = new JumpCubeAnimation();
             m_DropOnTowerChecker = new DropOnTowerChecker(m_TowerPresenter, m_Camera);
-            m_CubeIntersectionChecker = new CubeIntersectionChecker(m_TowerView);
         }
         
         public DropOnTowerStatus Place(CubeView view, CubeConfig config)
