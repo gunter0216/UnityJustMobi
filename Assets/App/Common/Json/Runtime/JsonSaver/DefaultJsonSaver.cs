@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using App.Common.Data.Runtime.Serializer;
+using App.Common.Json.Runtime.Serializer;
 using UnityEngine;
 
-namespace App.Common.Data.Runtime.JsonSaver
+namespace App.Common.Json.Runtime.JsonSaver
 {
     public class DefaultJsonSaver : IJsonSaver
     {

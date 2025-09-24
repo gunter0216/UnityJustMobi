@@ -2,7 +2,7 @@
 using App.Common.AssetSystem.Runtime.Context;
 using App.Common.Data.Runtime;
 using App.Common.SceneControllers.Runtime;
-using App.Game.SpriteLoaders.External;
+using App.Common.SpriteLoaders.External;
 using DG.Tweening;
 
 namespace App.Common.SceneControllers.External

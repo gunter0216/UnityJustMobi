@@ -4,6 +4,7 @@ using App.Core.CoreUI.External.View;
 using App.Core.CubeDragger.External;
 using App.Core.Cubes.External.Config;
 using App.Core.Hole.External.Animation;
+using App.Core.Message.External;
 using App.Core.Utility.External;
 
 namespace App.Core.Hole.External

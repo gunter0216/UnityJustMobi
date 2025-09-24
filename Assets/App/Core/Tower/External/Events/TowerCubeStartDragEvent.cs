@@ -1,4 +1,6 @@
-﻿namespace App.Core.Tower.External.Events
+﻿using App.Core.Tower.External.Cube;
+
+namespace App.Core.Tower.External.Events
 {
     public class TowerCubeStartDragEvent
     {

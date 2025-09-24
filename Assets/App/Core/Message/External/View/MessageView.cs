@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace App.Core.Menu.External.Animations
+namespace App.Core.Message.External.View
 {
     public class MessageView : MonoBehaviour
     {

@@ -1,7 +1,7 @@
-﻿using App.Common.Data.Runtime.Deserializer;
+﻿using App.Common.Json.Runtime.Deserializer;
 using App.Common.Utilities.Utility.Runtime;
 
-namespace App.Common.Data.Runtime.JsonLoader
+namespace App.Common.Json.Runtime.JsonLoader
 {
     public interface IJsonLoader : IJsonDeserializer
     {

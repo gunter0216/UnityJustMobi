@@ -1,5 +1,5 @@
 ﻿using System;
-using App.Common.Data.Runtime.Deserializer;
+using App.Common.Json.Runtime.Deserializer;
 using App.Common.Utilities.Utility.Runtime;
 using UnityEngine;
 using Object = UnityEngine.Object;

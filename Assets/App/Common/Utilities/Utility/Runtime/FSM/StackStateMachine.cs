@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace App.Game.Utility.Runtime.MenuSM
+namespace App.Common.Utilities.Utility.Runtime.FSM
 {
     public class StackStateMachine
     {

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using App.Common.AssetSystem.Runtime;
-using App.Common.FSM.Runtime;
+using App.Common.SpriteLoaders.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Common.Utilities.Utility.Runtime.Extensions;
-using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
-namespace App.Game.SpriteLoaders.External
+namespace App.Common.SpriteLoaders.External
 {
     public class SpriteLoader : IInitSystem, ISpriteLoader
     {

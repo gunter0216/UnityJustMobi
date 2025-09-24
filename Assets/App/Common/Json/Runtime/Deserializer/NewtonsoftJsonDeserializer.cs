@@ -3,7 +3,7 @@ using App.Common.Utilities.Utility.Runtime;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace App.Common.Data.Runtime.Deserializer
+namespace App.Common.Json.Runtime.Deserializer
 {
     public class NewtonsoftJsonDeserializer : IJsonDeserializer
     {

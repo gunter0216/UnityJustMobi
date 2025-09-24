@@ -1,4 +1,4 @@
-﻿namespace App.Core.CubeDragger.External
+﻿namespace App.Core.Message.External
 {
     public interface IMessageController
     {

@@ -3,7 +3,7 @@ using App.Core.Startups.External;
 using App.Core.Startups.External.Attributes;
 using App.Core.Startups.External.Constants;
 
-namespace App.Game.SpriteLoaders.External
+namespace App.Common.SpriteLoaders.External
 {
     [Configurator(ContextConstants.GlobalContext)]    
     public class SpriteLoaderConfigurator : Configurator

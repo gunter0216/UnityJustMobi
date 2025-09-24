@@ -1,13 +1,12 @@
-﻿using App.Common.Data.Runtime.Deserializer;
-using App.Common.Data.Runtime.JsonLoader;
-using App.Common.Data.Runtime.JsonSaver;
-using App.Common.Data.Runtime.Serializer;
-using App.Core.Startups.External;
+﻿using App.Common.Json.Runtime.Deserializer;
+using App.Common.Json.Runtime.JsonLoader;
+using App.Common.Json.Runtime.JsonSaver;
+using App.Common.Json.Runtime.Serializer;
 using App.Core.Startups.External.Attributes;
 using App.Core.Startups.External.Constants;
 using Newtonsoft.Json;
 
-namespace App.Common.Configurator.External
+namespace App.Common.Json.External
 {
     [Configurator(ContextConstants.GlobalContext)]    
     public class JsonConfigurator : Core.Startups.External.Configurator

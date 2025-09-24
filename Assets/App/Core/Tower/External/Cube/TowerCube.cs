@@ -1,7 +1,7 @@
 ﻿using App.Core.Cubes.External.Config;
 using App.Core.Tower.External.Data;
 
-namespace App.Core.Tower.External
+namespace App.Core.Tower.External.Cube
 {
     public class TowerCube
     {

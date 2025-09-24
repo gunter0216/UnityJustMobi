@@ -1,10 +1,9 @@
-﻿using System;
-using App.Common.AssetSystem.Runtime;
+﻿using App.Common.AssetSystem.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
-using App.Core.Menu.External.Animations;
+using App.Core.Message.External.Animation;
 
-namespace App.Core.CubeDragger.External
+namespace App.Core.Message.External
 {
     /// <summary>
     /// Отвечает за показ сообщений на экране

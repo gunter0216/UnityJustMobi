@@ -1,4 +1,5 @@
 ﻿using App.Common.AssetSystem.Runtime;
+using App.Common.SpriteLoaders.Runtime;
 using App.Common.Utilities.Pool.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
@@ -6,7 +7,6 @@ using App.Core.CoreUI.External.Fabric;
 using App.Core.CoreUI.External.View;
 using App.Core.Cubes.External.Config;
 using App.Core.CubesPanel.External.Presenter.Fabric;
-using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
 namespace App.Core.CoreUI.External

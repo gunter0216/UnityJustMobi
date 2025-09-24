@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using App.Common.Data.Runtime.Deserializer;
+using App.Common.Json.Runtime.Deserializer;
 using App.Common.Utilities.Utility.Runtime;
 using UnityEngine;
 
-namespace App.Common.Data.Runtime.JsonLoader
+namespace App.Common.Json.Runtime.JsonLoader
 {
     public class DefaultJsonLoader : IJsonLoader
     {

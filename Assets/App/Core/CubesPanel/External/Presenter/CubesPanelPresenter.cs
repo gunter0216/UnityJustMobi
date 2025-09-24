@@ -1,9 +1,9 @@
 ﻿using System;
+using App.Common.SpriteLoaders.Runtime;
 using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
 using App.Core.CubeDragger.External;
 using App.Core.Cubes.External;
-using App.Game.SpriteLoaders.Runtime;
 using UnityEngine;
 
 namespace App.Core.CubesPanel.External.Presenter

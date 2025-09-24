@@ -8,13 +8,14 @@ using App.Core.CoreUI.External;
 using App.Core.CoreUI.External.View;
 using App.Core.Cubes.External;
 using App.Core.Cubes.External.Config;
+using App.Core.Tower.External.Cube;
 using App.Core.Tower.External.Data;
 using App.Core.Utility.External;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace App.Core.Tower.External
+namespace App.Core.Tower.External.PlaceCube
 {
     public class PlaceCubeStrategy
     {

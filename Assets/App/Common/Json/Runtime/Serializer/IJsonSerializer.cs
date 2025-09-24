@@ -1,4 +1,4 @@
-﻿namespace App.Common.Data.Runtime.Serializer
+﻿namespace App.Common.Json.Runtime.Serializer
 {
     public interface IJsonSerializer
     {

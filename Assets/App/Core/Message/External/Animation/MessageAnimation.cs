@@ -4,11 +4,12 @@ using App.Common.Localization.External;
 using App.Common.Utilities.Pool.Runtime;
 using App.Common.Utilities.Utility.Runtime;
 using App.Core.Canvases.External;
+using App.Core.Message.External.View;
 using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace App.Core.Menu.External.Animations
+namespace App.Core.Message.External.Animation
 {
     public class MessageAnimation : IDisposable
     {

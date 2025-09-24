@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace App.Core.Tower.External
+namespace App.Core.Tower.External.Cube
 {
     public class TowerCubePresenter
     {
