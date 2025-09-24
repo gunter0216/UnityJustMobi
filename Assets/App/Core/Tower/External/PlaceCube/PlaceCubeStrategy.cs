@@ -124,7 +124,6 @@ namespace App.Core.Tower.External.PlaceCube
                 newPosition.x = position.x + randomOffset;
                 if (CanPlaceCubeInPosition(newPosition))
                 {
-                    newPosition.x += randomOffset;
                     break;
                 }
             }
